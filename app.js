@@ -40,9 +40,24 @@ class Drumkit {
   start() {
     const interval = (60 / this.bpm) * 1000;
     // Check if it's playing
-    this.isPlaying = setInterval(() => {
-      this.repeat();
-    }, interval);
+    if (!this.isPlaying) {
+      this.isPlaying = setInterval(() => {
+        this.repeat();
+      }, interval);
+    } else {
+      //remove the interval
+      clearInterval(this.isPlaying);
+      this.isPlaying = null;
+    }
+  }
+  updateBtn() {
+    if (!this.isPlaying) {
+      this.playBtn.innerText = "Stop";
+      this.playBtn.classList.add("active");
+    } else {
+      this.playBtn.innerText = "Play";
+      this.playBtn.classList.remove("active");
+    }
   }
 }
 
@@ -56,5 +71,6 @@ drumkit.pads.forEach((pad) => {
 });
 
 drumkit.playBtn.addEventListener("click", () => {
+  drumkit.updateBtn();
   drumkit.start();
 });
